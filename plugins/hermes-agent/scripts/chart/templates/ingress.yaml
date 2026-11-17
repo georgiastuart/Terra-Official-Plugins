@@ -13,7 +13,7 @@ metadata:
   name: {{ .Values.name }}-hermes-forwardauth
 spec:
   forwardAuth:
-    address: https://{{ .Values.host }}/auth
+    address: https://{{ .Release.Namespace }}.ws.harmonyhpc.io/auth
     trustForwardHeader: true
     authResponseHeaders:
       - Authorization
