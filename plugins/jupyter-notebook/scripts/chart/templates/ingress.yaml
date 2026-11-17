@@ -6,6 +6,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.certresolver: harmonyhpc
+    traefik.ingress.kubernetes.io/router.priority: "100"
 spec:
   ingressClassName: traefik-juno
   rules:
