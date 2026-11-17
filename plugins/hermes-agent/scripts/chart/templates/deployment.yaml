@@ -68,7 +68,7 @@ spec:
               mountPath: /opt/init-config
           securityContext:
             allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+            readOnlyRootFilesystem: false
             capabilities:
               drop:
                 - ALL
