@@ -9,7 +9,7 @@ spec:
     - port: 9120
       targetPort: 9120
       protocol: TCP
-      name: http
+      name: dashboard
     - port: 7681
       targetPort: 7681
       protocol: TCP
