@@ -78,11 +78,8 @@ spec:
           image: "{{ .Values.registry }}/{{ .Values.repo }}:{{ .Values.tag }}"
           imagePullPolicy: IfNotPresent
           securityContext:
-            allowPrivilegeEscalation: false
+            allowPrivilegeEscalation: true
             readOnlyRootFilesystem: false
-            capabilities:
-              drop:
-                - ALL
           command: ["/opt/init/start.sh"]
           lifecycle:
             preStop:
