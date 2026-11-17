@@ -40,6 +40,8 @@ spec:
         # marker-gated remap the root group already matches guid, so steady-
         # state starts skip the walk.
         fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
       initContainers:
         - name: write-config
           image: busybox
@@ -70,8 +72,6 @@ spec:
             capabilities:
               drop:
                 - ALL
-            seccompProfile:
-              type: RuntimeDefault
 
       containers:
         - name: hermes-agent
@@ -83,8 +83,6 @@ spec:
             capabilities:
               drop:
                 - ALL
-            seccompProfile:
-              type: RuntimeDefault
           command: ["/opt/init/start.sh"]
           lifecycle:
             preStop:
