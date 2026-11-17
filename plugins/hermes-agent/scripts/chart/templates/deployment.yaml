@@ -64,11 +64,23 @@ spec:
               mountPath: /opt/templates/theme
             - name: init-write-config
               mountPath: /opt/init-config
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
 
       containers:
         - name: hermes-agent
           image: "{{ .Values.registry }}/{{ .Values.repo }}:{{ .Values.tag }}"
           imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
           command: ["/opt/init/start.sh"]
           lifecycle:
             preStop:

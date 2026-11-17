@@ -2,10 +2,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.name }}-hermes
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.certresolver: harmonyhpc
+    traefik.ingress.kubernetes.io/router.priority: "100"
 spec:
-  # Kuiper >= 4.8.0 overwrites this with the launching namespace's IngressClass.
-  # nginx is the fallback for older deployments;
-  ingressClassName: nginx
+  ingressClassName: traefik-juno
   rules:
     - host: {{ .Values.host }}
       http:
