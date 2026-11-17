@@ -6,8 +6,12 @@ spec:
   selector:
     juno-innovations.com/workstation: "{{ .Values.name }}"
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 9120
+      targetPort: 9120
+      protocol: TCP
+      name: http
+    - port: 7681
+      targetPort: 7681
       protocol: TCP
       name: http
     - port: {{ .Values.git_port }}
