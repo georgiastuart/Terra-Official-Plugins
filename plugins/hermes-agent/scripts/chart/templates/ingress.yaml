@@ -1,52 +1,24 @@
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: {{ .Values.name }}-hermes-stripprefix
-spec:
-  stripPrefix:
-    prefixes:
-      - "/{{ .Release.Namespace }}/hermes/{{ .Values.name }}"
----
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: {{ .Values.name }}-hermes-forwardauth
-spec:
-  forwardAuth:
-    address: https://{{ .Release.Namespace }}.ws.harmonyhpc.io/auth
-    trustForwardHeader: true
-    authResponseHeaders:
-      - Authorization
-      - X-Auth-User
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Values.name }}-hermes
+  name: {{ .Values.name }}-hermes-dashboard
+  namespace: {{ .Release.Namespace }}
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.certresolver: harmonyhpc
-    traefik.ingress.kubernetes.io/router.priority: "100"
-    traefik.ingress.kubernetes.io/router.middlewares: "{{ .Release.Namespace }}-{{ .Values.name }}-hermes-forwardauth@kubernetescrd,{{ .Release.Namespace }}-{{ .Values.name }}-hermes-stripprefix@kubernetescrd"
+    traefik.ingress.kubernetes.io/router.priority: "90"
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Values.name }}-hubble-auth@kubernetescrd,{{ .Release.Namespace }}-{{ .Values.name }}-dashboard-headers@kubernetescrd,{{ .Release.Namespace }}-{{ .Values.name }}-dashboard-stripprefix@kubernetescrd
 spec:
   ingressClassName: traefik-juno
   rules:
-    - host: {{ .Values.host }}
-      http:
-        paths:
-          # Two paths so Hubble lists both endpoints (dashboard + terminal). 
-          - path: "/{{ .Release.Namespace }}/hermes/{{ .Values.name }}/dashboard"
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ .Values.name }}-hermes
-                port:
-                  number: 9120
-          - path: "/{{ .Release.Namespace }}/hermes/{{ .Values.name }}/"
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ .Values.name }}-hermes
-                port:
-                  number: 7681
+  - host: {{ .Values.host }}
+    http:
+      paths:
+      - path: /{{ .Release.Namespace }}/hermes/{{ .Values.name }}/dashboard
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.name }}-hermes
+            port:
+              number: 9120
