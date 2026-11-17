@@ -112,8 +112,6 @@ spec:
           env:
             - name: HERMES_HOME
               value: /opt/data
-            - name: HERMES_DASHBOARD_PUBLIC_URL
-              value: "https://{{ .Values.host }}/{{ .Release.Namespace }}/hermes/{{ .Values.name }}/dashboard"
             - name: HOME
               value: /opt/data
             - name: USER

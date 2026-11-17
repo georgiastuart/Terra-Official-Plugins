@@ -1,3 +1,12 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ .Values.name }}-hermes-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - "/{{ .Release.Namespace }}/hermes/{{ .Values.name }}"
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -7,6 +16,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.certresolver: harmonyhpc
     traefik.ingress.kubernetes.io/router.priority: "100"
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ .Release.Namespace }}-{{ .Values.name }}-hermes-stripprefix@kubernetescrd"
 spec:
   ingressClassName: traefik-juno
   rules:
@@ -22,7 +32,7 @@ spec:
                 name: {{ .Values.name }}-hermes
                 port:
                   number: 8080
-          - path: "/{{ .Release.Namespace }}/hermes/{{ .Values.name }}"
+          - path: "/{{ .Release.Namespace }}/hermes/{{ .Values.name }}/"
             pathType: Prefix
             backend:
               service:
