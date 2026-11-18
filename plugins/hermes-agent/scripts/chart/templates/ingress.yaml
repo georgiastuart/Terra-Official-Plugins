@@ -6,7 +6,7 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.priority: "90"
-    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Values.name }}-hubble-auth@kubernetescrd,{{ .Release.Namespace }}-{{ .Values.name }}-dashboard-headers@kubernetescrd,{{ .Release.Namespace }}-{{ .Values.name }}-dashboard-stripprefix@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ .Release.Namespace }}-{{ .Values.name }}-hubble-auth@kubernetescrd,{{ .Release.Namespace }}-{{ .Values.name }}-dashboard-headers@kubernetescrd"
 spec:
   ingressClassName: traefik-juno
   rules:
