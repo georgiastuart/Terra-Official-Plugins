@@ -20,3 +20,26 @@ spec:
             name: {{ .Values.name }}-hermes
             port:
               number: 9120
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.name }}-hermes-terminal
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.priority: "50"
+    traefik.ingress.kubernetes.io/router.middlewares: {{ .Release.Namespace }}-{{ .Values.name }}-hubble-auth@kubernetescrd
+spec:
+  ingressClassName: traefik-juno
+  rules:
+  - host: {{ .Values.host }}
+    http:
+      paths:
+      - path: /{{ .Release.Namespace }}/hermes/{{ .Values.name }}
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ .Values.name }}-hermes
+            port:
+              number: 7681
