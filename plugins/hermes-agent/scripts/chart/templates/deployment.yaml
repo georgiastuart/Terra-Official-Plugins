@@ -70,8 +70,8 @@ spec:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             runAsNonRoot: true
-            runAsUser: {{ .Values.puid | quote }}
-            runAsGroup: {{ .Values.puid | quote }}
+            runAsUser: {{ .Values.puid }}
+            runAsGroup: {{ .Values.puid }}
             capabilities:
               drop:
                 - ALL
