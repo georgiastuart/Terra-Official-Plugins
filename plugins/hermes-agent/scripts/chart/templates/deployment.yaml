@@ -69,6 +69,9 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: {{ .Values.puid | quote }}
+            runAsGroup: {{ .Values.puid | quote }}
             capabilities:
               drop:
                 - ALL
